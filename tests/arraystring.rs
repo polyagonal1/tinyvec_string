@@ -1,7 +1,7 @@
 use tinyvec::ArrayVec;
 use tinyvec_string::arraystring::*;
 
-use std::{borrow::Cow, convert::TryInto};
+use std::{borrow::Cow, convert::TryInto, collections::HashMap};
 
 #[test]
 fn test_from_str() {
@@ -386,4 +386,13 @@ fn test_from_char() {
 	let s: ArrayString<[u8; 16]> = 'x'.try_into().unwrap();
 	assert_eq!(s, 'x'.to_string());
 	assert_eq!(s, ArrayString::<[u8; 4]>::from_char_infallible('x'));
+}
+
+#[test]
+fn test_arraystring_in_hashmap() {
+	let mut hashmap: HashMap<ArrayString<[u8; 10]>, i32> = HashMap::new();
+
+	hashmap.insert(ArrayString::from("foo"), 1);
+
+	assert_eq!(hashmap.get("foo"), Some(&1));
 }

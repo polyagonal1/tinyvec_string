@@ -1,7 +1,7 @@
 use tinyvec::TinyVec;
 use tinyvec_string::tinystring::*;
 
-use std::{borrow::Cow, iter::FromIterator};
+use std::{borrow::Cow, iter::FromIterator, collections::HashMap};
 
 #[test]
 fn test_from_str() {
@@ -375,4 +375,15 @@ fn test_from_char() {
 	assert_eq!(TinyString::<[u8; 16]>::from('a'), 'a'.to_string());
 	let s: TinyString<[u8; 16]> = 'x'.into();
 	assert_eq!(s, 'x'.to_string());
+}
+
+#[test]
+fn test_tinystring_in_hashmap() {
+	let mut hashmap: HashMap<TinyString<[u8; 4]>, i32> = HashMap::new();
+
+	hashmap.insert(TinyString::from("foo"), 1);
+	hashmap.insert(TinyString::from("foobar"), 2);
+
+	assert_eq!(hashmap.get("foo"), Some(&1));
+	assert_eq!(hashmap.get("foobar"), Some(&2));
 }
