@@ -10,6 +10,7 @@ use core::{
 		self, Add, AddAssign, Bound, Deref, DerefMut, Index, IndexMut,
 		RangeBounds,
 	},
+	borrow::{Borrow, BorrowMut},
 	ptr,
 	str::{self, Chars, FromStr, Utf8Error},
 };
@@ -1449,6 +1450,18 @@ impl<A: ByteArray> ops::IndexMut<ops::RangeToInclusive<usize>>
 	#[inline]
 	fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut str {
 		IndexMut::index_mut(&mut **self, index)
+	}
+}
+
+impl<A: ByteArray> Borrow<str> for ArrayString<A> {
+	fn borrow(&self) -> &str {
+		&*self
+	}
+}
+
+impl<A: ByteArray> BorrowMut<str> for ArrayString<A> {
+	fn borrow_mut(&mut self) -> &mut str {
+		&mut *self
 	}
 }
 
